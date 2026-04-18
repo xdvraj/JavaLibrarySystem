@@ -1,99 +1,102 @@
 import java.util.ArrayList;
-
 public class Library {
-    private final ArrayList<Book> books;
-    private final ArrayList<Member> members;
-    private final ArrayList<IssueRecord> issues;
-
+    private ArrayList<Book> books;
+    private ArrayList<Member> members;
+    private ArrayList<IssueRecord> issues;
     public Library() {
         books = new ArrayList<>();
         members = new ArrayList<>();
         issues = new ArrayList<>();
     }
-
     public void addBook(Book book) {
         books.add(book);
     }
-
     public void addMember(Member member) {
         members.add(member);
     }
-
     public void bookList() {
         if (books.isEmpty()) {
             System.out.println("Shelf is empty.");
             return;
         }
         System.out.println("\n--- Shelf Books ---");
-        for (Book book : books) {
-            String status;
-            if (book.issued()) {
-                status = "Issued to member ID " + book.member();
+        for (Book b : books) {
+            String s;
+            if (b.issued()) {
+                s = "Issued to member ID " + b.member();
             } else {
-                status = "Available";
+                s = "Available";
             }
-            System.out.println("ID: " + book.id()
-                    + ", Title: " + book.title()
-                    + ", Author: " + book.author()
-                    + ", Status: " + status);
+            System.out.println("ID: " + b.id() + ", Title: " + b.title() + ", Author: " + b.author() + ", Status: " + s);
         }
     }
-    public boolean hasBook(int bookId) {
-        return pickBook(bookId) != null;
-    }
-    private Book pickBook(int bookId) {
-        for (Book book : books) {
-            if (book.id() == bookId) {
-                return book;
+    public boolean hasBook(int id) {
+        for (Book b : books) {
+            if (b.id() == id) {
+                return true;
             }
         }
-        return null;
-    }
-    private Member pickMember(int memberId) {
-        for (Member member : members) {
-            if (member.id() == memberId) {
-                return member;
-            }
-        }
-        return null;
+        return false;
     }
     public boolean giveBook(int bookId, int memberId) {
-        Book book = pickBook(bookId);
-        Member member = pickMember(memberId);
-        if (book == null) {
+        Book b = null;
+        Member m = null;
+        for (Book x : books) {
+            if (x.id() == bookId) {
+                b = x;
+                break;
+            }
+        }
+        for (Member x : members) {
+            if (x.id() == memberId) {
+                m = x;
+                break;
+            }
+        }
+        if (b == null) {
             System.out.println("Book id missing.");
             return false;
         }
-        if (member == null) {
+        if (m == null) {
             System.out.println("Member id missing.");
             return false;
         }
-        if (book.issued()) {
+        if (b.issued()) {
             System.out.println("Book already out.");
             return false;
         }
-        book.out(memberId);
-        issues.add(new IssueRecord(
-                book.id(),
-                book.title(),
-                member.id(),
-                member.name()
-        ));
-        System.out.println("Given to " + member.name() + ".");
+        b.out(memberId);
+        issues.add(new IssueRecord(b.id(), b.title(), m.id(), m.name()));
+        System.out.println("Given to " + m.name() + ".");
         return true;
     }
     public boolean takeBook(int bookId) {
-        Book book = pickBook(bookId);
-        if (book == null) {
+        Book b = null;
+        for (Book x : books) {
+            if (x.id() == bookId) {
+                b = x;
+                break;
+            }
+        }
+        if (b == null) {
             System.out.println("Book id missing.");
             return false;
         }
-        if (!book.issued()) {
+        if (!b.issued()) {
             System.out.println("Book not issued.");
             return false;
         }
-        removeIssue(bookId);
-        book.back();
+        int idx = -1;
+        for (int i = 0; i < issues.size(); i++) {
+            if (issues.get(i).book() == bookId) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx != -1) {
+            issues.remove(idx);
+        }
+        b.back();
         System.out.println("Returned to shelf.");
         return true;
     }
@@ -103,24 +106,8 @@ public class Library {
             return;
         }
         System.out.println("\n--- Loan List ---");
-        for (IssueRecord issue : issues) {
-            System.out.println("Book: " + issue.title()
-                    + " (ID: " + issue.book() + ")"
-                    + " -> Issued to: " + issue.name()
-                    + " (Member ID: " + issue.member() + ")");
-        }
-    }
-    private void removeIssue(int bookId) {
-        int foundIndex = -1;
-        for (int i = 0; i < issues.size(); i++) {
-            if (issues.get(i).book() == bookId) {
-                foundIndex = i;
-                break;
-            }
-        }
-        // remove match
-        if (foundIndex != -1) {
-            issues.remove(foundIndex);
+        for (IssueRecord r : issues) {
+            System.out.println("Book: " + r.title() + " (ID: " + r.book() + ") -> Issued to: " + r.name() + " (Member ID: " + r.member() + ")");
         }
     }
 }

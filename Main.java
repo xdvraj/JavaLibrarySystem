@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -11,6 +10,7 @@ public class Main {
         data.addMember(new Member(5, "Manvir"));
         boolean running = true;
         while (running) {
+            // simple menu
             System.out.println("\nLibrary Desk");
             System.out.println("1. Add Book");
             System.out.println("2. View Books");
@@ -26,7 +26,6 @@ public class Main {
                 System.out.println("number only");
                 continue;
             }
-
             if (cmd == 1) {
                 System.out.print("new book id: ");
                 int bookId;
