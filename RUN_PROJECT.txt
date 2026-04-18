@@ -6,6 +6,7 @@ Files required in same folder:
 - Library.java
 - Book.java
 - Member.java
+- IssueRecord.java
 
 -------------------------------------
 Ubuntu / Linux

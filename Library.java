@@ -3,10 +3,12 @@ import java.util.ArrayList;
 public class Library {
     private ArrayList<Book> books;
     private ArrayList<Member> members;
+    private ArrayList<IssueRecord> issueRecords;
 
     public Library() {
         books = new ArrayList<>();
         members = new ArrayList<>();
+        issueRecords = new ArrayList<>();
     }
 
     public void addBook(Book book) {
@@ -77,6 +79,12 @@ public class Library {
         }
 
         book.issueTo(memberId);
+        issueRecords.add(new IssueRecord(
+                book.getBookId(),
+                book.getTitle(),
+                member.getMemberId(),
+                member.getName()
+        ));
         System.out.println("Book issued to " + member.getName() + ".");
         return true;
     }
@@ -95,8 +103,34 @@ public class Library {
         }
 
         // Basic return logic
+        int indexToRemove = -1;
+        for (int i = 0; i < issueRecords.size(); i++) {
+            if (issueRecords.get(i).getBookId() == bookId) {
+                indexToRemove = i;
+                break;
+            }
+        }
+        if (indexToRemove != -1) {
+            issueRecords.remove(indexToRemove);
+        }
+
         book.returnBook();
         System.out.println("Book returned successfully.");
         return true;
+    }
+
+    public void viewIssuedBooks() {
+        if (issueRecords.isEmpty()) {
+            System.out.println("No books are currently issued.");
+            return;
+        }
+
+        System.out.println("\n--- Issued Books Details ---");
+        for (IssueRecord record : issueRecords) {
+            System.out.println("Book: " + record.getBookTitle()
+                    + " (ID: " + record.getBookId() + ")"
+                    + " -> Issued to: " + record.getMemberName()
+                    + " (Member ID: " + record.getMemberId() + ")");
+        }
     }
 }

@@ -87,6 +87,8 @@ public class Main {
 
                 library.returnBook(bookId);
             } else if (choice == 5) {
+                library.viewIssuedBooks();
+            } else if (choice == 6) {
                 running = false;
                 System.out.println("Exiting system. Goodbye!");
             } else {
@@ -103,6 +105,7 @@ public class Main {
         System.out.println("2. View Books");
         System.out.println("3. Issue Book");
         System.out.println("4. Return Book");
-        System.out.println("5. Exit");
+        System.out.println("5. View Issued Books");
+        System.out.println("6. Exit");
     }
 }
