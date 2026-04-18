@@ -1,41 +1,28 @@
-Library Management System - Run Guide
-=====================================
+Run Guide
+=========
 
-Files required in same folder:
+Needed files in one folder:
 - Main.java
 - Library.java
 - Book.java
 - Member.java
 - IssueRecord.java
 
--------------------------------------
-Ubuntu / Linux
--------------------------------------
-1) Open terminal in project folder
-2) Check Java:
+Windows / Linux
+---------------
+1) Open terminal in this folder
+2) Check Java tools
    java -version
    javac -version
-3) Compile:
+3) Compile code
    javac *.java
-4) Run:
+4) Start app
    java Main
 
-If javac is missing:
+If `javac` is missing on Ubuntu:
    sudo apt update
    sudo apt install default-jdk
 
--------------------------------------
-Windows (CMD or PowerShell)
--------------------------------------
-1) Open terminal in project folder
-2) Check Java:
-   java -version
-   javac -version
-3) Compile:
-   javac *.java
-4) Run:
-   java Main
-
-Notes:
-- Keep all .java files in the same folder.
-- Do not add package lines unless you also change compile/run commands.
+Quick note:
+- Keep all `.java` files together.
+- If you add `package`, update run commands too.

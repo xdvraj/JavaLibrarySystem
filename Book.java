@@ -4,7 +4,6 @@ public class Book {
     private String author;
     private boolean issued;
     private int memberId;
-
     public Book(int id, String title, String author) {
         this.id = id;
         this.title = title;
@@ -12,32 +11,25 @@ public class Book {
         this.issued = false;
         this.memberId = -1;
     }
-
-    public int getId() {
+    public int id() {
         return id;
     }
-
-    public String getTitle() {
+    public String title() {
         return title;
     }
-
-    public String getAuthor() {
+    public String author() {
         return author;
     }
-
-    public boolean isIssued() {
+    public boolean issued() {
         return issued;
     }
-
-    public int getMemberId() {
+    public int member() {
         return memberId;
     }
-
-    public void issueTo(int memberId) {
+    public void lendTo(int memberId) {
         issued = true;
         this.memberId = memberId;
     }
-
     public void markReturned() {
         issued = false;
         memberId = -1;
