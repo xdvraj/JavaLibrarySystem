@@ -19,7 +19,7 @@ public class Library {
         members.add(member);
     }
 
-    public void showBooks() {
+    public void bookList() {
         if (books.isEmpty()) {
             System.out.println("Shelf is empty.");
             return;
@@ -38,7 +38,10 @@ public class Library {
                     + ", Status: " + status);
         }
     }
-    public Book getBook(int bookId) {
+    public boolean hasBook(int bookId) {
+        return pickBook(bookId) != null;
+    }
+    private Book pickBook(int bookId) {
         for (Book book : books) {
             if (book.id() == bookId) {
                 return book;
@@ -46,7 +49,7 @@ public class Library {
         }
         return null;
     }
-    public Member getMember(int memberId) {
+    private Member pickMember(int memberId) {
         for (Member member : members) {
             if (member.id() == memberId) {
                 return member;
@@ -54,10 +57,9 @@ public class Library {
         }
         return null;
     }
-
-    public boolean lendBook(int bookId, int memberId) {
-        Book book = getBook(bookId);
-        Member member = getMember(memberId);
+    public boolean giveBook(int bookId, int memberId) {
+        Book book = pickBook(bookId);
+        Member member = pickMember(memberId);
         if (book == null) {
             System.out.println("Book id missing.");
             return false;
@@ -70,7 +72,7 @@ public class Library {
             System.out.println("Book already out.");
             return false;
         }
-        book.lendTo(memberId);
+        book.out(memberId);
         issues.add(new IssueRecord(
                 book.id(),
                 book.title(),
@@ -80,8 +82,8 @@ public class Library {
         System.out.println("Given to " + member.name() + ".");
         return true;
     }
-    public boolean receiveBook(int bookId) {
-        Book book = getBook(bookId);
+    public boolean takeBook(int bookId) {
+        Book book = pickBook(bookId);
         if (book == null) {
             System.out.println("Book id missing.");
             return false;
@@ -91,12 +93,11 @@ public class Library {
             return false;
         }
         removeIssue(bookId);
-        book.markReturned();
+        book.back();
         System.out.println("Returned to shelf.");
         return true;
     }
-
-    public void showLoans() {
+    public void loanList() {
         if (issues.isEmpty()) {
             System.out.println("No active loans.");
             return;

@@ -26,11 +26,11 @@ public class Book {
     public int member() {
         return memberId;
     }
-    public void lendTo(int memberId) {
+    public void out(int memberId) {
         issued = true;
         this.memberId = memberId;
     }
-    public void markReturned() {
+    public void back() {
         issued = false;
         memberId = -1;
     }
