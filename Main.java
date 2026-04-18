@@ -5,10 +5,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Library library = new Library();
 
-        // Adding some members manually for testing issue/return
-        library.addMember(new Member(1, "Aarav"));
-        library.addMember(new Member(2, "Diya"));
-        library.addMember(new Member(3, "Kabir"));
+        library.addMember(new Member(1, "Arth"));
+        library.addMember(new Member(2, "Vinay"));
+        library.addMember(new Member(3, "Satvik"));
+        library.addMember(new Member(4, "Nishant"));
+        library.addMember(new Member(5, "Manvir"));
 
         boolean running = true;
 
@@ -16,15 +17,15 @@ public class Main {
             printMenu();
             System.out.print("Enter your choice: ");
 
-            // Simple numeric validation for menu choice
+
             if (!scanner.hasNextInt()) {
                 System.out.println("Please enter a valid number.");
-                scanner.nextLine(); // clear wrong input
+                scanner.nextLine();
                 continue;
             }
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume leftover newline
+            scanner.nextLine(); 
 
             if (choice == 1) {
                 System.out.print("Enter Book ID: ");
@@ -36,7 +37,6 @@ public class Main {
                 int bookId = scanner.nextInt();
                 scanner.nextLine();
 
-                // Repetitive check kept intentionally simple
                 if (library.findBookById(bookId) != null) {
                     System.out.println("Book with this ID already exists.");
                     continue;
@@ -100,7 +100,7 @@ public class Main {
     }
 
     private static void printMenu() {
-        System.out.println("\n===== Library Management System =====");
+        System.out.println("\nLibrary Management System");
         System.out.println("1. Add Book");
         System.out.println("2. View Books");
         System.out.println("3. Issue Book");
