@@ -15,88 +15,81 @@ public class Main {
 
         while (running) {
             printMenu();
-            System.out.print("Enter your choice: ");
-
-
-            if (!scanner.hasNextInt()) {
-                System.out.println("Please enter a valid number.");
-                scanner.nextLine();
-                continue;
-            }
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); 
-
-            if (choice == 1) {
-                System.out.print("Enter Book ID: ");
-                if (!scanner.hasNextInt()) {
-                    System.out.println("Book ID should be a number.");
-                    scanner.nextLine();
-                    continue;
-                }
-                int bookId = scanner.nextInt();
-                scanner.nextLine();
-
-                if (library.findBookById(bookId) != null) {
-                    System.out.println("Book with this ID already exists.");
-                    continue;
-                }
-
-                System.out.print("Enter Book Title: ");
-                String title = scanner.nextLine().trim();
-                System.out.print("Enter Author Name: ");
-                String author = scanner.nextLine().trim();
-
-                if (title.isEmpty() || author.isEmpty()) {
-                    System.out.println("Title and author cannot be empty.");
-                } else {
-                    library.addBook(new Book(bookId, title, author));
-                    System.out.println("Book added successfully.");
-                }
-            } else if (choice == 2) {
-                library.viewBooks();
-            } else if (choice == 3) {
-                System.out.print("Enter Book ID to issue: ");
-                if (!scanner.hasNextInt()) {
-                    System.out.println("Book ID should be a number.");
-                    scanner.nextLine();
-                    continue;
-                }
-                int bookId = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.print("Enter Member ID: ");
-                if (!scanner.hasNextInt()) {
-                    System.out.println("Member ID should be a number.");
-                    scanner.nextLine();
-                    continue;
-                }
-                int memberId = scanner.nextInt();
-                scanner.nextLine();
-
-                library.issueBook(bookId, memberId);
-            } else if (choice == 4) {
-                System.out.print("Enter Book ID to return: ");
-                if (!scanner.hasNextInt()) {
-                    System.out.println("Book ID should be a number.");
-                    scanner.nextLine();
-                    continue;
-                }
-                int bookId = scanner.nextInt();
-                scanner.nextLine();
-
-                library.returnBook(bookId);
-            } else if (choice == 5) {
-                library.viewIssuedBooks();
-            } else if (choice == 6) {
-                running = false;
-                System.out.println("Exiting system. Goodbye!");
-            } else {
-                System.out.println("Invalid choice. Please try again.");
-            }
+            int option = readInt(scanner, "choice");
+            running = handleOption(library, scanner, option);
         }
 
         scanner.close();
+    }
+
+    private static boolean handleOption(Library library, Scanner scanner, int option) {
+        if (option == 1) {
+            int bookId = readInt(scanner, "book id");
+
+            if (library.findBookById(bookId) != null) {
+                System.out.println("Book with this ID already exists.");
+                return true;
+            }
+
+            System.out.print("Enter Book Title: ");
+            String title = scanner.nextLine().trim();
+            System.out.print("Enter Author Name: ");
+            String author = scanner.nextLine().trim();
+
+            if (title.isEmpty() || author.isEmpty()) {
+                System.out.println("Title and author cannot be empty.");
+                return true;
+            }
+
+            library.addBook(new Book(bookId, title, author));
+            System.out.println("Book added successfully.");
+            return true;
+        }
+
+        if (option == 2) {
+            library.viewBooks();
+            return true;
+        }
+
+        if (option == 3) {
+            int bookId = readInt(scanner, "book id");
+            int memberId = readInt(scanner, "member id");
+            library.issueBook(bookId, memberId);
+            return true;
+        }
+
+        if (option == 4) {
+            int bookId = readInt(scanner, "book id");
+            library.returnBook(bookId);
+            return true;
+        }
+
+        if (option == 5) {
+            library.viewIssuedBooks();
+            return true;
+        }
+
+        if (option == 6) {
+            System.out.println("Exiting system. Goodbye!");
+            return false;
+        }
+
+        System.out.println("Invalid choice. Please try again.");
+        return true;
+    }
+
+    private static int readInt(Scanner scanner, String label) {
+        while (true) {
+            System.out.print("Enter " + label + ": ");
+            if (scanner.hasNextInt()) {
+                int value = scanner.nextInt();
+                scanner.nextLine(); // clear line
+                return value;
+            }
+
+            System.out.println("Please enter a valid " + label + ".");
+            scanner.nextLine();
+        }
     }
 
     private static void printMenu() {

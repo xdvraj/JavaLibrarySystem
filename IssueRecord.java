@@ -1,29 +1,29 @@
 public class IssueRecord {
     private int bookId;
-    private String bookTitle;
+    private String title;
     private int memberId;
-    private String memberName;
+    private String name;
 
-    public IssueRecord(int bookId, String bookTitle, int memberId, String memberName) {
+    public IssueRecord(int bookId, String title, int memberId, String name) {
         this.bookId = bookId;
-        this.bookTitle = bookTitle;
+        this.title = title;
         this.memberId = memberId;
-        this.memberName = memberName;
+        this.name = name;
     }
 
     public int getBookId() {
         return bookId;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public String getTitle() {
+        return title;
     }
 
     public int getMemberId() {
         return memberId;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getName() {
+        return name;
     }
 }

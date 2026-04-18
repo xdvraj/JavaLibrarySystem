@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
 public class Library {
-    private ArrayList<Book> books;
-    private ArrayList<Member> members;
-    private ArrayList<IssueRecord> issueRecords;
+    private final ArrayList<Book> books;
+    private final ArrayList<Member> members;
+    private final ArrayList<IssueRecord> issues;
 
     public Library() {
         books = new ArrayList<>();
         members = new ArrayList<>();
-        issueRecords = new ArrayList<>();
+        issues = new ArrayList<>();
     }
 
     public void addBook(Book book) {
@@ -29,12 +29,12 @@ public class Library {
         for (Book book : books) {
             String status;
             if (book.isIssued()) {
-                status = "Issued to member ID " + book.getIssuedToMemberId();
+                status = "Issued to member ID " + book.getMemberId();
             } else {
                 status = "Available";
             }
 
-            System.out.println("ID: " + book.getBookId()
+            System.out.println("ID: " + book.getId()
                     + ", Title: " + book.getTitle()
                     + ", Author: " + book.getAuthor()
                     + ", Status: " + status);
@@ -43,7 +43,7 @@ public class Library {
 
     public Book findBookById(int bookId) {
         for (Book book : books) {
-            if (book.getBookId() == bookId) {
+            if (book.getId() == bookId) {
                 return book;
             }
         }
@@ -52,7 +52,7 @@ public class Library {
 
     public Member findMemberById(int memberId) {
         for (Member member : members) {
-            if (member.getMemberId() == memberId) {
+            if (member.getId() == memberId) {
                 return member;
             }
         }
@@ -79,10 +79,10 @@ public class Library {
         }
 
         book.issueTo(memberId);
-        issueRecords.add(new IssueRecord(
-                book.getBookId(),
+        issues.add(new IssueRecord(
+                book.getId(),
                 book.getTitle(),
-                member.getMemberId(),
+                member.getId(),
                 member.getName()
         ));
         System.out.println("Book issued to " + member.getName() + ".");
@@ -102,35 +102,40 @@ public class Library {
             return false;
         }
 
-        // Basic return logic
-        int indexToRemove = -1;
-        for (int i = 0; i < issueRecords.size(); i++) {
-            if (issueRecords.get(i).getBookId() == bookId) {
-                indexToRemove = i;
-                break;
-            }
-        }
-        if (indexToRemove != -1) {
-            issueRecords.remove(indexToRemove);
-        }
+        removeIssue(bookId);
 
-        book.returnBook();
+        book.markReturned();
         System.out.println("Book returned successfully.");
         return true;
     }
 
     public void viewIssuedBooks() {
-        if (issueRecords.isEmpty()) {
+        if (issues.isEmpty()) {
             System.out.println("No books are currently issued.");
             return;
         }
 
         System.out.println("\n--- Issued Books Details ---");
-        for (IssueRecord record : issueRecords) {
-            System.out.println("Book: " + record.getBookTitle()
-                    + " (ID: " + record.getBookId() + ")"
-                    + " -> Issued to: " + record.getMemberName()
-                    + " (Member ID: " + record.getMemberId() + ")");
+        for (IssueRecord issue : issues) {
+            System.out.println("Book: " + issue.getTitle()
+                    + " (ID: " + issue.getBookId() + ")"
+                    + " -> Issued to: " + issue.getName()
+                    + " (Member ID: " + issue.getMemberId() + ")");
+        }
+    }
+
+    private void removeIssue(int bookId) {
+        int foundIndex = -1;
+        for (int i = 0; i < issues.size(); i++) {
+            if (issues.get(i).getBookId() == bookId) {
+                foundIndex = i;
+                break;
+            }
+        }
+
+        // remove match
+        if (foundIndex != -1) {
+            issues.remove(foundIndex);
         }
     }
 }
